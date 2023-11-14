@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hJ35/6mewzy+agcNPzsCSR1Q52CQsmK4uvh2yjS8EUuIvq01m2r4zR4mucj+3qQ3ycCO36M9Cthh9svSY6Z80Q==",
+  "dgSpecHash": "eEqorzRwvSbeHnfCC5H82RO1OSC1pysXRu7N3UA3+xN890Th9L1/RUenTxdJbavcHTLbHRMkq+pRU+vaA9g0TQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Usuario\\Desktop\\FilmsAPI\\FilmsAPI\\FilmsAPI.csproj",
+  "projectFilePath": "C:\\Users\\Usuario\\Desktop\\FilmsAPI\\FilmsAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.4\\microsoft.aspnetcore.openapi.7.0.4.nupkg.sha512",
