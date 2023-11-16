@@ -4,15 +4,8 @@ using FilmsAPI.Data.Enum;
 
 namespace FilmsAPI.Data.Entities
 {
-    public class Movie
+    public class Movie : Film
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public Genre Genre { get; set; }
-
-       
+        public int Duration  { get; set; }
     }
 }

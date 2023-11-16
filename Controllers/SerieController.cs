@@ -2,11 +2,16 @@
 
 namespace FilmsAPI.Controllers
 {
+
+    [Route("api/[controller]")]
+    [ApiController]
+    
     public class SerieController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+
+        
+
+
+       
     }
 }

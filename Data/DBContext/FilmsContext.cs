@@ -10,9 +10,17 @@ namespace FilmsAPI.Data.DBContext
         {
         }
 
+        public DbSet<User> Users { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<RegularUser> RegularUsers { get; set; }
+
+        public DbSet<Film> Films { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Serie> Series { get; set; }
-        public DbSet<User> Users { get; set; }
+
+        public DbSet<FavoriteSerie> FavoritesSeries { get; set; }
+        public DbSet<FavoriteMovie> FavoritesMovies { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,11 +36,12 @@ namespace FilmsAPI.Data.DBContext
 
                         Title = $"Pelicula {i}",
                         Description = $"Descripción de la película {i}",
-                        Genre = Genre.Action
+                        Genre = Genres.Action,
+                        Duration = i + 100,
+                        FilmType = FilmType.Movie
                     }
                 );
             }
-
             //Se generan 10 series de test, para tener una base
             for (int i = 1; i <= 10; i++)
             {
@@ -43,27 +52,44 @@ namespace FilmsAPI.Data.DBContext
                         Title = $"Serie {i}",
                         Seasons = i + 1,
                         Description = $"Descripción de la serie {i}",
-                        Genre = Genre.Comedy,
-                        Episodes = i + 3
+                        Genre = Genres.Comedy,
+                        Episodes = i + 3,
+                        FilmType= FilmType.Serie
                     }
                 );
 
+                modelBuilder.Entity<User>().HasDiscriminator(u => u.UserType)
+                                    .HasValue<Admin>(UserType.Admin)
+                                    .HasValue<RegularUser>(UserType.RegularUser);
 
-                // Configuración de la relación muchos a muchos entre User y Movie
+                // Configuración de relaciones entre User y FavoriteSerie/FavoriteMovie
                 modelBuilder.Entity<User>()
-            .HasMany(u => u.Movies)
-            .WithMany()
-            .UsingEntity(j => j.ToTable("UserMovies"));
+                    .HasMany(u => u.FavoriteSeries)
+                    .WithOne(fs => fs.User)
+                    .HasForeignKey(fs => fs.UserId);
 
-                // Configuración de la relación muchos a muchos entre User y Serie
                 modelBuilder.Entity<User>()
-              .HasMany(u => u.Series)
-              .WithMany()
-              .UsingEntity(j => j.ToTable("UserSeries"));
-            }
+                    .HasMany(u => u.FavoriteMovies)
+                    .WithOne(fm => fm.User)
+                    .HasForeignKey(fm => fm.UserId);
 
-            //garantiza que cualquier configuración predeterminada proporcionada por Entity Framework Core se aplique antes de aplicar tus propias configuraciones personalizadas.
-            base.OnModelCreating(modelBuilder);
+                // Configuración de relaciones entre FavoriteSerie y Serie
+                modelBuilder.Entity<FavoriteSerie>()
+                    .HasOne(fs => fs.Serie)
+                    .WithMany(s => s.Favorites)
+                    .HasForeignKey(fs => fs.SerieId);
+
+                // Configuración de relaciones entre FavoriteMovie y Movie
+                modelBuilder.Entity<FavoriteMovie>()
+                    .HasOne(fm => fm.Movie)
+                    .WithMany(m => m.Favorites)
+                    .HasForeignKey(fm => fm.MovieId);
+
+
+
+
+                //garantiza que cualquier configuración predeterminada proporcionada por Entity Framework Core se aplique antes de aplicar tus propias configuraciones personalizadas.
+                base.OnModelCreating(modelBuilder);
 
         }
     }

@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
-
+/*
 namespace FilmsAPI.Controllers
 {
 
@@ -68,3 +68,4 @@ namespace FilmsAPI.Controllers
 
     }
 }
+*/
