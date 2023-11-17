@@ -14,10 +14,10 @@ namespace FilmsAPI.Data.Entities
         public string? Email { get; set; }
         public string? Password { get; set; }
         [Required]
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
         public UserTypes UserType { get; set; }
 
-        public ICollection<FavoriteSerie> FavoriteSeries { get; set; }
-        public ICollection<FavoriteMovie> FavoriteMovies { get; set; }
+        public ICollection<FavoriteSerie>? FavoriteSeries { get; set; }
+        public ICollection<FavoriteMovie>? FavoriteMovies { get; set; }
     }
 }

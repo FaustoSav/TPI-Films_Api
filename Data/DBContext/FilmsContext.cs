@@ -54,13 +54,13 @@ namespace FilmsAPI.Data.DBContext
                         Description = $"Descripción de la serie {i}",
                         Genre = Genres.Comedy,
                         Episodes = i + 3,
-                        FilmType= FilmType.Serie
+                        FilmType = FilmType.Serie
                     }
                 );
 
                 modelBuilder.Entity<User>().HasDiscriminator(u => u.UserType)
-                                    .HasValue<Admin>(UserType.Admin)
-                                    .HasValue<RegularUser>(UserType.RegularUser);
+                                    .HasValue<Admin>(UserTypes.Admin)
+                                    .HasValue<RegularUser>(UserTypes.RegularUser);
 
                 // Configuración de relaciones entre User y FavoriteSerie/FavoriteMovie
                 modelBuilder.Entity<User>()
@@ -76,13 +76,13 @@ namespace FilmsAPI.Data.DBContext
                 // Configuración de relaciones entre FavoriteSerie y Serie
                 modelBuilder.Entity<FavoriteSerie>()
                     .HasOne(fs => fs.Serie)
-                    .WithMany(s => s.Favorites)
+                    .WithMany(s => s.FavoriteSerie)
                     .HasForeignKey(fs => fs.SerieId);
 
                 // Configuración de relaciones entre FavoriteMovie y Movie
                 modelBuilder.Entity<FavoriteMovie>()
                     .HasOne(fm => fm.Movie)
-                    .WithMany(m => m.Favorites)
+                    .WithMany(m => m.FavoriteMovie)
                     .HasForeignKey(fm => fm.MovieId);
 
 
@@ -91,6 +91,7 @@ namespace FilmsAPI.Data.DBContext
                 //garantiza que cualquier configuración predeterminada proporcionada por Entity Framework Core se aplique antes de aplicar tus propias configuraciones personalizadas.
                 base.OnModelCreating(modelBuilder);
 
+            }
         }
     }
 }
