@@ -1,6 +1,6 @@
 ﻿namespace FilmsAPI.Data.Enum
 {
-    public enum UserTypes
+    public enum UserType
     {
        Admin,
        RegularUser

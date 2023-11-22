@@ -1,6 +1,6 @@
 ﻿namespace FilmsAPI.Data.Enum
 {
-    public enum FilmType
+    public enum MediaType
     {
         Movie,
         Serie

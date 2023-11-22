@@ -15,9 +15,8 @@ namespace FilmsAPI.Data.Entities
         public string? Password { get; set; }
         [Required]
         public string? UserName { get; set; }
-        public UserTypes UserType { get; set; }
-
-        public ICollection<FavoriteSerie>? FavoriteSeries { get; set; }
-        public ICollection<FavoriteMovie>? FavoriteMovies { get; set; }
+        public string UserType { get; set; } = string.Empty;
+        public bool State { get; set; } = true;
+        public ICollection<FavoriteMedia>? FavoritesMedia { get; set; } 
     }
 }

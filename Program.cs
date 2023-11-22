@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 
 //DbContext
 
-builder.Services.AddDbContext<FilmsContext>(options => options.UseSqlite(builder.Configuration["DB : ConnectionString"]));
+builder.Services.AddDbContext<MediaContext>(options => options.UseSqlite(builder.Configuration["DB : ConnectionString"]));
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

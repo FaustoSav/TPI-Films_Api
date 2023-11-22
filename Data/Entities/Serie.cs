@@ -4,10 +4,11 @@ using FilmsAPI.Data.Enum;
 
 namespace FilmsAPI.Data.Entities
 {
-    public class Serie : Film
+    public class Serie : Media
     {
-        public int Seasons { get; set; }
+        public MediaType MediaType { get; set; } = MediaType.Serie;
 
+        public int Seasons { get; set; }
         public int Episodes { get; set; }
     }
 }

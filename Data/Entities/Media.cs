@@ -4,16 +4,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FilmsAPI.Data.Entities
 {
-    public class Film
+    public class Media
+
     {
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int MediaId { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public Genres Genre { get; set; }
-        public FilmType FilmType { get; set; }
+        public Genre Genre { get; set; }
+
+        public bool State { get; set; } = true;
 
     }
 }

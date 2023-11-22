@@ -1,9 +1,12 @@
-﻿namespace FilmsAPI.Data.Entities
+﻿using System.Runtime.CompilerServices;
+
+namespace FilmsAPI.Data.Entities
 {
     public class RegularUser : User
     {
 
-        public List<Movie> Movies { get; set; } = new List<Movie>();
-        public List<Serie> Series { get; set; } = new List<Serie>();
+      public RegularUser() {
+            this.UserType = "RegularUser";
+        }
     }
 }

@@ -5,11 +5,11 @@ namespace FilmsAPI.Services.Interface
     public interface ISerieService
     {
 
-        void AddSerie(Serie serie);
-        void RemoveSerie(Serie serie);
+        public int AddSerie(Serie serie);
+        void RemoveSerie(int id);
         public List<Serie> GetAllSeries();
-        public List<Serie> GetSerieById(int id);
-        public List<Serie> GetSerieByName(string name);
+        public Serie? GetSerieById(int id);
+        public Serie? GetSerieByTitle(string title);
 
     }
 }

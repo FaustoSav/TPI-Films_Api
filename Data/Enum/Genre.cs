@@ -1,6 +1,6 @@
 ﻿namespace FilmsAPI.Data.Enum
 {
-    public enum Genres
+    public enum Genre
     {
         Action,
         Comedy,

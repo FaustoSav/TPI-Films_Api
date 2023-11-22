@@ -4,8 +4,10 @@ using FilmsAPI.Data.Enum;
 
 namespace FilmsAPI.Data.Entities
 {
-    public class Movie : Film
+    public class Movie : Media
     {
         public int Duration  { get; set; }
+       public  MediaType MediaType { get; set; } = MediaType.Movie;
+
     }
 }
