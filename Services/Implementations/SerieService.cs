@@ -1,7 +1,6 @@
 ﻿using FilmsAPI.Data.DBContext;
 using FilmsAPI.Data.Entities;
 using FilmsAPI.Services.Interface;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace FilmsAPI.Services.Implementations
 {
