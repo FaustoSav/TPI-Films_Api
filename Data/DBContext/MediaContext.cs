@@ -12,7 +12,6 @@ namespace FilmsAPI.Data.DBContext
 
         public DbSet<User> Users { get; set; }
 
-
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Serie> Series { get; set; }
 

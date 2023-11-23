@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FilmsAPI.Controllers
 {
-    public class MovieController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class MovieController : ControllerBase
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+      
     }
 }

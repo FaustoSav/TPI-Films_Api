@@ -15,7 +15,10 @@ namespace FilmsAPI.Services.Implementations
             _mediaContext = consultaContext;
         }
 
-
+        public List<User> GetAllUsers()
+        {
+            return _mediaContext.Users.ToList();
+        }
         public User? GetUserByEmail(string email)
         {
             return _mediaContext.Users.SingleOrDefault(u => u.Email == email);
