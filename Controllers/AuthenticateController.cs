@@ -5,6 +5,7 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using FilmsAPI.Services.Interface;
 using FilmsAPI.Data.Models;
+using FilmsAPI.Data.Entities;
 
 namespace FilmsAPI.Controllers
 {
@@ -30,11 +31,11 @@ namespace FilmsAPI.Controllers
             //Paso 1: Validamos las credenciales
             BaseResponse validarUsuarioResult = _userService.ValidarUsuario(credentialsDto.Email, credentialsDto.Password);
 
-            if (validarUsuarioResult.Message == "wrong email")
+            if (validarUsuarioResult.Message == "Wrong email")
             {
                 return BadRequest(validarUsuarioResult.Message);
             }
-            else if (validarUsuarioResult.Message == "wrong password")
+            else if (validarUsuarioResult.Message == "Wrong password")
             {
                 return Unauthorized();
             }

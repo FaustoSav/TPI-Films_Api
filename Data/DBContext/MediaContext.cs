@@ -69,7 +69,7 @@ namespace FilmsAPI.Data.DBContext
                 modelBuilder.Entity<Movie>().HasData(
                     new Movie
                     {
-
+                        MediaId = i,
                         Title = $"Pelicula {i}",
                         Description = $"Descripción de la película {i}",
                         Genre = Genre.Action,
@@ -84,7 +84,7 @@ namespace FilmsAPI.Data.DBContext
                 modelBuilder.Entity<Serie>().HasData(
                     new Serie
                     {
-
+                        MediaId= i + 10,
                         Title = $"Serie {i}",
                         Seasons = i + 1,
                         Description = $"Descripción de la serie {i}",

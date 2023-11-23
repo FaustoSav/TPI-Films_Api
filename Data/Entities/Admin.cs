@@ -2,7 +2,10 @@
 {
     public class Admin : User
     {
+        public Admin()
+        {
+            this.UserType = "Admin";
+        }
 
-      
     }
 }
