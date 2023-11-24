@@ -1,5 +1,6 @@
 ﻿using FilmsAPI.Data.DBContext;
 using FilmsAPI.Data.Entities;
+using FilmsAPI.Data.Enum;
 using FilmsAPI.Services.Interface;
 
 namespace FilmsAPI.Services.Implementations
@@ -55,8 +56,8 @@ namespace FilmsAPI.Services.Implementations
         public Movie GetMovieByTitle(string title)
 
         {
-            Movie? movie = _mediaContext.Movies.SingleOrDefault(m => m.Title == title);
 
+            Movie? movie = _mediaContext.Movies.SingleOrDefault(m => m.Title == title);
             return movie;
 
         }
