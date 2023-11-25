@@ -31,11 +31,11 @@ namespace FilmsAPI.Controllers
             //Paso 1: Validamos las credenciales
             BaseResponse validarUsuarioResult = _userService.ValidarUsuario(credentialsDto.Email, credentialsDto.Password);
 
-            if (validarUsuarioResult.Message == "Wrong email")
+            if (validarUsuarioResult.Message == "wrong email")
             {
                 return BadRequest(validarUsuarioResult.Message);
             }
-            else if (validarUsuarioResult.Message == "Wrong password")
+            else if (validarUsuarioResult.Message == "wrong password")
             {
                 return Unauthorized();
             }

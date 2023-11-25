@@ -10,9 +10,9 @@ namespace FilmsAPI.Services.Implementations
 
         private readonly MediaContext _mediaContext;
 
-        public UserService(MediaContext consultaContext)
+        public UserService(MediaContext mediaContext)
         {
-            _mediaContext = consultaContext;
+            _mediaContext = mediaContext;
         }
 
         public List<User> GetAllUsers()
@@ -32,18 +32,18 @@ namespace FilmsAPI.Services.Implementations
                 if (userForLogin.Password == password)
                 {
                     response.Result = true;
-                    response.Message = "Loging succesfull";
+                    response.Message = "loging succesfull";
                 }
                 else
                 {
                     response.Result = false;
-                    response.Message = "Wrong password";
+                    response.Message = "wrong password";
                 }
             }
             else
             {
                 response.Result = false;
-                response.Message = "Wrong email";
+                response.Message = "wrong email";
             }
             return response;
         }

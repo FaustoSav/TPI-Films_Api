@@ -1,16 +1,30 @@
 ﻿using FilmsAPI.Data.Entities;
 using FilmsAPI.Data.Enum;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace FilmsAPI.Data.DBContext
 {
     public class MediaContext : DbContext
     {
-        public MediaContext(DbContextOptions options) : base(options)
+        /*
+        private readonly string _connectionString;
+        public MediaContext(string connectionString)
         {
+            _connectionString = connectionString;
         }
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite(_connectionString,
+            sqliteOptionsAction: config => // Le decimos a EntityFramework que si la Base de Datos no está, la cree
+            {
+                config.MigrationsAssembly(Assembly.GetAssembly(typeof(MediaContext)).FullName);
+            });
+        }
+        */
         public DbSet<User> Users { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<RegularUser> RegularUsers { get; set; }
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Serie> Series { get; set; }
@@ -18,49 +32,52 @@ namespace FilmsAPI.Data.DBContext
         public DbSet<FavoriteMedia> FavoritesMedia { get; set; }
 
 
+        public MediaContext(DbContextOptions<MediaContext> options) : base(options)
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             modelBuilder.Entity<User>().HasDiscriminator(u => u.UserType);
+             
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.FavoritesMedia)
                 .WithOne(fs => fs.User);
 
 
-            modelBuilder.Entity<User>().HasData(
-              new User
+            modelBuilder.Entity<Admin>().HasData(
+              new Admin
               {
                   LastName = "Farias",
                   Name = "Franco",
                   Email = "fariasfranco@gmail.com",
                   UserName = "FrancoFarias",
                   Password = "123456",
-                  Id = 1,
-                  UserType = "Admin"
+                  Id = 1
               },
-               new User
+               new Admin
                {
                    LastName = "Savoya",
                    Name = "Fausto",
                    Email = "savoyafausto@gmail.com",
                    UserName = "FaustoSav",
                    Password = "123456",
-                   Id = 2,
-                   UserType = "Admin"
-               },
-               new User
-               {
-                   LastName = "Garcia",
-                   Name = "Pedro",
-                   Email = "pgarcia@gmail.com",
-                   UserName = "pgarcia",
-                   Password = "123456",
-                   Id = 3,
-                   UserType = "RegularUser"
-               }); ;
-
-
+                   Id = 2
+               }
+              );
+            modelBuilder.Entity<RegularUser>().HasData(
+                new RegularUser
+                {
+                    LastName = "Garcia",
+                    Name = "Pedro",
+                    Email = "regular@gmail.com",
+                    UserName = "regular",
+                    Password = "123456",
+                    Id = 3
+                });
+            
 
             //Se generan 10 peliculas de test, para tener una base
             for (int i = 1; i <= 10; i++)
@@ -71,7 +88,7 @@ namespace FilmsAPI.Data.DBContext
                         MediaId = i,
                         Title = $"Pelicula {i}",
                         Description = $"Descripción de la película {i}",
-                        Genre = Genre.Action,
+                        Genre = Genre.Action.ToString(),
                         Duration = i + 100
 
                     }
@@ -83,18 +100,18 @@ namespace FilmsAPI.Data.DBContext
                 modelBuilder.Entity<Serie>().HasData(
                     new Serie
                     {
-                        MediaId= i + 10,
+                        MediaId = i + 10,
                         Title = $"Serie {i}",
                         Seasons = i + 1,
                         Description = $"Descripción de la serie {i}",
-                        Genre = Genre.Comedy,
+                        Genre = Genre.Comedy.ToString(),
                         Episodes = i + 3
 
                     }
                 );
             }
 
-            modelBuilder.Entity<FavoriteMedia>().HasDiscriminator(fm => fm.MediaType);
+           // modelBuilder.Entity<FavoriteMedia>().HasDiscriminator(fm => fm.MediaType);
 
             modelBuilder.Entity<FavoriteMedia>()
          .HasOne(fm => fm.User)

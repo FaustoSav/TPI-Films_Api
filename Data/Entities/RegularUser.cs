@@ -5,8 +5,6 @@ namespace FilmsAPI.Data.Entities
     public class RegularUser : User
     {
 
-      public RegularUser() {
-            this.UserType = "RegularUser";
-        }
+     
     }
 }
