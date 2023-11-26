@@ -1,3 +1,4 @@
+
 using FilmsAPI.Data.DBContext;
 using FilmsAPI.Services.Implementations;
 using FilmsAPI.Services.Interface;
@@ -11,11 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setupAction =>
 {
-    setupAction.AddSecurityDefinition("MediaApiBearerAuth", new OpenApiSecurityScheme() 
+    setupAction.AddSecurityDefinition("MediaApiApiBearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
@@ -30,22 +31,23 @@ builder.Services.AddSwaggerGen(setupAction =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "MediaApiBearerAuth" } 
+                    Id = "MediaApiApiBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definición
                 }, new List<string>() }
     });
-});
-
+}); ;
 builder.Services.AddDbContext<MediaContext>(dbContextOptions => dbContextOptions.UseSqlite(
     builder.Configuration["DB:ConnectionString"]));
 
-builder.Services.AddScoped<ISerieService, SerieService>();
+# region Inyecccion de dependencias
 builder.Services.AddScoped<IMovieService, MovieService>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISerieService, SerieService>();
 builder.Services.AddScoped<IFavoritesMedia, FavoritesMediaService>();
+builder.Services.AddScoped<IUserService, UserService>();
+#endregion
 
 
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer(options => 
+builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token
+    .AddJwtBearer(options => //Acá definimos la configuración de la autenticación. le decimos qué cosas queremos comprobar. La fecha de expiración se valida por defecto.
     {
         options.TokenValidationParameters = new()
         {
@@ -58,8 +60,6 @@ builder.Services.AddAuthentication("Bearer")
         };
     }
 );
-
-
 
 var app = builder.Build();
 

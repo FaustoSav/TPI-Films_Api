@@ -32,7 +32,7 @@ namespace FilmsAPI.Services.Implementations
                 if (userForLogin.Password == password)
                 {
                     response.Result = true;
-                    response.Message = "loging succesfull";
+                    response.Message = "loging Succesfull";
                 }
                 else
                 {

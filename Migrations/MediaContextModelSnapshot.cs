@@ -46,8 +46,6 @@ namespace FilmsAPI.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("FavoritesMedia");
-
-                    b.HasDiscriminator<string>("MediaType");
                 });
 
             modelBuilder.Entity("FilmsAPI.Data.Entities.Media", b =>
@@ -91,15 +89,19 @@ namespace FilmsAPI.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("State")
@@ -117,42 +119,9 @@ namespace FilmsAPI.Migrations
 
                     b.ToTable("Users");
 
-                    b.HasDiscriminator<string>("UserType");
+                    b.HasDiscriminator<string>("UserType").HasValue("User");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "fariasfranco@gmail.com",
-                            LastName = "Farias",
-                            Name = "Franco",
-                            Password = "123456",
-                            State = true,
-                            UserName = "FrancoFarias",
-                            UserType = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "savoyafausto@gmail.com",
-                            LastName = "Savoya",
-                            Name = "Fausto",
-                            Password = "123456",
-                            State = true,
-                            UserName = "FaustoSav",
-                            UserType = "Admin"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "pgarcia@gmail.com",
-                            LastName = "Garcia",
-                            Name = "Pedro",
-                            Password = "123456",
-                            State = true,
-                            UserName = "pgarcia",
-                            UserType = "RegularUser"
-                        });
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("FilmsAPI.Data.Entities.Movie", b =>
@@ -401,6 +370,54 @@ namespace FilmsAPI.Migrations
                             Episodes = 13,
                             MediaType = 1,
                             Seasons = 11
+                        });
+                });
+
+            modelBuilder.Entity("FilmsAPI.Data.Entities.Admin", b =>
+                {
+                    b.HasBaseType("FilmsAPI.Data.Entities.User");
+
+                    b.HasDiscriminator().HasValue("Admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "fariasfranco@gmail.com",
+                            LastName = "Farias",
+                            Name = "Franco",
+                            Password = "123456",
+                            State = true,
+                            UserName = "FrancoFarias"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "savoyafausto@gmail.com",
+                            LastName = "Savoya",
+                            Name = "Fausto",
+                            Password = "123456",
+                            State = true,
+                            UserName = "FaustoSav"
+                        });
+                });
+
+            modelBuilder.Entity("FilmsAPI.Data.Entities.RegularUser", b =>
+                {
+                    b.HasBaseType("FilmsAPI.Data.Entities.User");
+
+                    b.HasDiscriminator().HasValue("RegularUser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            Email = "regular@gmail.com",
+                            LastName = "Garcia",
+                            Name = "Pedro",
+                            Password = "123456",
+                            State = true,
+                            UserName = "regular"
                         });
                 });
 

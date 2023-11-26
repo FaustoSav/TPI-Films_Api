@@ -23,7 +23,7 @@ namespace FilmsAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public IActionResult GetUsers()
         {
             return Ok(_userService.GetAllUsers);
         }
@@ -42,18 +42,7 @@ namespace FilmsAPI.Controllers
 
         }
 
-        //public int CreateUser(User user);
-        //public void UpdateUser(User user);
-        //public void DeleteUser(int userId);
-
-
-
-        //public  Name 
-        //public  LastName 
-        //public  Password
-        //public  Email 
-        //public  UserName 
-        //public  UserType 
+       
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserPostDto userDto)
         {
@@ -61,13 +50,13 @@ namespace FilmsAPI.Controllers
             if (role == "Admin")
             {
 
-                var user = new User()
+                var user = new RegularUser()
                 {
                     Email = userDto.Email,
                     LastName = userDto.LastName,
                     Name = userDto.Name,
                     Password = userDto.Password,
-                    UserType = userDto.UserType,
+                    UserType = "RegularUser",
                     UserName = userDto.UserName,
                 };
 
@@ -88,14 +77,14 @@ namespace FilmsAPI.Controllers
             if (role == "Admin")
             {
 
-                var user = new User()
+                var user = new RegularUser()
                 {
                     Id = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value),
                     Email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value,
                     LastName = userUpdateDto.LastName,
                     Name = userUpdateDto.Name,
                     Password = userUpdateDto.Password,
-                    UserType = userUpdateDto.UserType,
+                    UserType = "RegularUser",
                     UserName = userUpdateDto.UserName,
                 };
 

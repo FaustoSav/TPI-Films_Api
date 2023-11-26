@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FilmsAPI.Data.Entities
 {
-    public class Media
+    public abstract class Media
 
     {
 
@@ -14,7 +14,6 @@ namespace FilmsAPI.Data.Entities
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Genre { get; set; }
-
         public bool State { get; set; } = true;
 
     }

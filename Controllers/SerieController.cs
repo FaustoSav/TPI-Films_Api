@@ -10,7 +10,8 @@ namespace FilmsAPI.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-   
+    [Authorize]
+
     public class SerieController : ControllerBase
     {
 

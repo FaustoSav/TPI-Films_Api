@@ -1,36 +1,20 @@
-﻿using FilmsAPI.Data.Entities;
+﻿
+using FilmsAPI.Data.Entities;
 using FilmsAPI.Data.Enum;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+
+
 
 namespace FilmsAPI.Data.DBContext
 {
     public class MediaContext : DbContext
     {
-        /*
-        private readonly string _connectionString;
-        public MediaContext(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite(_connectionString,
-            sqliteOptionsAction: config => // Le decimos a EntityFramework que si la Base de Datos no está, la cree
-            {
-                config.MigrationsAssembly(Assembly.GetAssembly(typeof(MediaContext)).FullName);
-            });
-        }
-        */
         public DbSet<User> Users { get; set; }
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<RegularUser> RegularUsers { get; set; }
-
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Serie> Series { get; set; }
-
         public DbSet<FavoriteMedia> FavoritesMedia { get; set; }
-
+        public DbSet<Serie> Series { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<RegularUser> RegularUsers { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
         public MediaContext(DbContextOptions<MediaContext> options) : base(options)
         {
@@ -39,12 +23,8 @@ namespace FilmsAPI.Data.DBContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<User>().HasDiscriminator(u => u.UserType);
-             
-
             modelBuilder.Entity<User>()
-                .HasMany(u => u.FavoritesMedia)
-                .WithOne(fs => fs.User);
+                .HasDiscriminator(u => u.UserType);
 
 
             modelBuilder.Entity<Admin>().HasData(
@@ -65,8 +45,9 @@ namespace FilmsAPI.Data.DBContext
                    UserName = "FaustoSav",
                    Password = "123456",
                    Id = 2
-               }
-              );
+               });
+
+
             modelBuilder.Entity<RegularUser>().HasData(
                 new RegularUser
                 {
@@ -77,7 +58,11 @@ namespace FilmsAPI.Data.DBContext
                     Password = "123456",
                     Id = 3
                 });
-            
+
+
+            modelBuilder.Entity<User>()
+               .HasMany(u => u.FavoritesMedia)
+               .WithOne(fs => fs.User);
 
             //Se generan 10 peliculas de test, para tener una base
             for (int i = 1; i <= 10; i++)
@@ -111,7 +96,7 @@ namespace FilmsAPI.Data.DBContext
                 );
             }
 
-           // modelBuilder.Entity<FavoriteMedia>().HasDiscriminator(fm => fm.MediaType);
+            // modelBuilder.Entity<FavoriteMedia>().HasDiscriminator(fm => fm.MediaType);
 
             modelBuilder.Entity<FavoriteMedia>()
          .HasOne(fm => fm.User)
@@ -120,7 +105,6 @@ namespace FilmsAPI.Data.DBContext
 
             //garantiza que cualquier configuración predeterminada proporcionada por Entity Framework Core se aplique antes de aplicar tus propias configuraciones personalizadas.
             base.OnModelCreating(modelBuilder);
-
         }
     }
 }

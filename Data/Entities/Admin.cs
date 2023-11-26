@@ -1,4 +1,5 @@
-﻿namespace FilmsAPI.Data.Entities
+﻿
+namespace FilmsAPI.Data.Entities
 {
     public class Admin : User
     {
