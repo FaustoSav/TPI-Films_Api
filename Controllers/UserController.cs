@@ -1,4 +1,5 @@
-﻿using FilmsAPI.Data.Entities;
+﻿using FilmsAPI.Data.DBContext;
+using FilmsAPI.Data.Entities;
 using FilmsAPI.Data.Models;
 using FilmsAPI.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
@@ -25,10 +26,10 @@ namespace FilmsAPI.Controllers
         [HttpGet]
         public IActionResult GetUsers()
         {
-            return Ok(_userService.GetAllUsers);
+            return Ok(_userService.GetAllUsers());
         }
 
-        [HttpGet("email")]
+        [HttpGet("{email}")]
         public IActionResult GetUserByEmail([FromQuery] string email)
         {
 
@@ -42,7 +43,7 @@ namespace FilmsAPI.Controllers
 
         }
 
-       
+
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserPostDto userDto)
         {
@@ -97,13 +98,20 @@ namespace FilmsAPI.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
 
-        public IActionResult DeleteUser()
+        public IActionResult DeleteUser([FromQuery] int idDelete)
         {
-            int id = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            _userService.DeleteUser(id);
-            return NoContent();
+
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+
+            if (role == "Admin")
+            {
+                _userService.DeleteUser(idDelete);
+
+            }
+
+            return Forbid("No tenes los permisos necesarios para realizar esta operación.");
 
 
         }

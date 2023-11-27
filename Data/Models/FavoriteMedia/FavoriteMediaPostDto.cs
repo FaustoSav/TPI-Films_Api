@@ -4,8 +4,10 @@ namespace FilmsAPI.Data.Models.FavoriteMedia
 {
     public class FavoriteMediaPostDto
     {
-        public int Id { get; set; }
+  
         public string Title { get; set; } = "Default Value";
+        public string Description { get; set; } = string.Empty;
+        public string Genre { get; set; } = string.Empty;
         public MediaType MediaType { get; set; }
     }
 }

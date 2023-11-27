@@ -17,7 +17,7 @@ namespace FilmsAPI.Services.Implementations
 
         public List<User> GetAllUsers()
         {
-            return _mediaContext.Users.ToList();
+            return _mediaContext.Users.Where(u => u.State == true ).ToList();
         }
         public User? GetUserByEmail(string email)
         {
@@ -72,7 +72,11 @@ namespace FilmsAPI.Services.Implementations
 
         }
 
+        public User? GetUserById(int userId)
+        {
+            return _mediaContext.Users.SingleOrDefault(u => u.Id == userId);
 
+        }
 
     }
 }

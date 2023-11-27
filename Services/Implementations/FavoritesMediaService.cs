@@ -1,12 +1,14 @@
 ﻿using FilmsAPI.Data.DBContext;
 using FilmsAPI.Data.Entities;
 using FilmsAPI.Data.Enum;
+using FilmsAPI.Data.Models.FavoriteMedia;
 using FilmsAPI.Services.Interface;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FilmsAPI.Services.Implementations
 {
-    public class FavoritesMediaService :IFavoritesMedia
+    public class FavoritesMediaService : IFavoritesMedia
     {
         private readonly MediaContext _mediaContext;
 
@@ -14,30 +16,41 @@ namespace FilmsAPI.Services.Implementations
         {
             _mediaContext = mediaContext;
         }
-        public void AddToFavorites( )
+        public List<FavoriteMedia> GetAllFavorites()
         {
-      //Title 
+
+            return _mediaContext.FavoritesMedia.ToList();
 
 
-      //UserId 
-    
-      // MediaType MediaType 
+        }
+        public int AddToFavorites(FavoriteMedia favoriteToAdd)
+        {
+            _mediaContext.FavoritesMedia.Add(favoriteToAdd);
+             _mediaContext.SaveChanges();
 
-      //  MediaId 
-      
+            return favoriteToAdd.FavoriteMediaId;
 
-    }
+        }
         public void RemoveFromFavorites(int id)
         {
-            FavoriteMedia? favoriteToDelete = _mediaContext.FavoritesMedia.SingleOrDefault(fm => fm.MediaId == id);
+            FavoriteMedia? favoriteToDelete = _mediaContext.FavoritesMedia.SingleOrDefault(fm => fm.FavoriteMediaId == id);
             if (favoriteToDelete != null)
             {
-                favoriteToDelete.State = false;
-                _mediaContext.Update(favoriteToDelete);
+                
+               
+                _mediaContext.Remove(favoriteToDelete);
                 _mediaContext.SaveChanges();
             }
+        }
 
+        public FavoriteMedia? GetFavoriteById(int id)
+        {
+            return _mediaContext.FavoritesMedia.SingleOrDefault(s => s.FavoriteMediaId == id);
 
+        }
+        public List<FavoriteMedia>? GetFavoriteByTitle(string title)
+        {
+            return _mediaContext.FavoritesMedia.Where(f => f.Title.Contains(title)).ToList();
         }
     }
 }
