@@ -21,9 +21,14 @@ namespace FilmsAPI.Controllers
             _favoriteMediaService = favoriteMediaService;
         }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return Ok();
+        }
 
 
-
+        /*
 
 
         [HttpGet]
@@ -56,6 +61,10 @@ namespace FilmsAPI.Controllers
         {
 
         }
+
+
+    }
+    */
 
 
     }
