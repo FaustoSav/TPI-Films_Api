@@ -4,6 +4,7 @@ using FilmsAPI.Data.Models.Serie;
 using FilmsAPI.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FilmsAPI.Controllers
 {
@@ -28,7 +29,7 @@ namespace FilmsAPI.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAllMovies()
+        public IActionResult GetAllSeries()
         {
 
             return Ok(_serieService.GetAllSeries());
@@ -36,6 +37,19 @@ namespace FilmsAPI.Controllers
 
         }
 
+        [HttpGet("DeletedSeries")]
+        public IActionResult GetDeletedSeries()
+        {
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            if (role == "Admin")
+            {
+                return Ok(_serieService.GetDeletedSeries());
+
+            }
+            return Forbid("Permisos insuficientes");
+
+
+        }
         [HttpGet("id")]
         public IActionResult GetSerieById([FromQuery] int id)
         {
@@ -58,7 +72,7 @@ namespace FilmsAPI.Controllers
         public IActionResult GetSerieByTitle([FromQuery] string title)
         {
 
-            Serie? serie = _serieService.GetSerieByTitle(title);
+            List<Serie> serie = _serieService.GetSeriesByTitle(title);
 
             if (serie == null)
             {
@@ -73,27 +87,38 @@ namespace FilmsAPI.Controllers
 
         public IActionResult DeleteSerie([FromQuery] int deleteId)
         {
-
-            _serieService.RemoveSerie(deleteId);
-            return Ok("Serie eliminada");
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            if (role == "Admin")
+            {
+                _serieService.RemoveSerie(deleteId);
+                return Ok("Serie eliminada");
+            }
+            return Forbid("Permisos insuficientes");
 
         }
 
         [HttpPost]
         public IActionResult AddMovie([FromBody] SeriePost serie)
         {
-            var Serie = new Serie()
+
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            if (role == "Admin")
             {
+                var Serie = new Serie()
+                {
 
-                Title = serie.Title,
-                Description = serie.Description,
-                Genre = serie.Genre,
-                Seasons = serie.Seasons,
-                Episodes = serie.Episodes,
-            };
+                    Title = serie.Title,
+                    Description = serie.Description,
+                    Genre = serie.Genre,
+                    Seasons = serie.Seasons,
+                    Episodes = serie.Episodes,
+                };
 
-            int serieId = _serieService.AddSerie(Serie);
-            return Ok(serieId);
+                int serieId = _serieService.AddSerie(Serie);
+                return Ok(serieId);
+            }
+            return Forbid("Permisos insuficientes");
+
 
         }
 

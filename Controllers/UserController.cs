@@ -1,6 +1,6 @@
 ﻿using FilmsAPI.Data.DBContext;
 using FilmsAPI.Data.Entities;
-using FilmsAPI.Data.Models;
+using FilmsAPI.Data.Models.User;
 using FilmsAPI.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,26 +26,40 @@ namespace FilmsAPI.Controllers
         [HttpGet]
         public IActionResult GetUsers()
         {
-            return Ok(_userService.GetAllUsers());
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            if (role == "Admin")
+            {
+                return Ok(_userService.GetAllUsers());
+
+            }
+            return Forbid("Permisos insuficientes");
+
         }
 
         [HttpGet("{email}")]
         public IActionResult GetUserByEmail([FromQuery] string email)
         {
 
-            User? user = _userService.GetUserByEmail(email);
-
-            if (user == null)
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            if(role == "Admin")
             {
-                return NotFound();
+                User? user = _userService.GetUserByEmail(email);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
             }
-            return Ok(user);
+            return Forbid("Permisos insuficientes");
 
         }
 
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] UserPostDto userDto)
+        [Route("CreateRegularUser")]
+
+        public IActionResult CreateRegularUser([FromBody] UserPostDto userDto)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
             if (role == "Admin")
@@ -65,10 +79,34 @@ namespace FilmsAPI.Controllers
                 return Ok(id);
             }
 
-            return Forbid("No tenes los permisos necesarios para realizar la solicitud");
+            return Forbid("No tenes los permisos necesarios.");
 
         }
+        [HttpPost]
+        [Route("CreateAdmin")]
+        public IActionResult CreateAdmin([FromBody] UserPostDto userDto)
+        {
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            if (role == "Admin")
+            {
 
+                Admin user = new Admin()
+                {
+                    Email = userDto.Email,
+                    LastName = userDto.LastName,
+                    Name = userDto.Name,
+                    Password = userDto.Password,
+                    UserType = "Admin",
+                    UserName = userDto.UserName,
+                };
+
+                int id = _userService.CreateUser(user);
+                return Ok(id);
+            }
+
+            return Forbid("No tenes los permisos necesarios.");
+
+        }
 
         [HttpPut]
         public IActionResult UpdateUser([FromBody] UserUpdateDto userUpdateDto)
@@ -93,7 +131,7 @@ namespace FilmsAPI.Controllers
                 return Ok();
             }
 
-            return Forbid("No tenes los permisos necesarios para realizar la solicitud");
+            return Forbid("No tenes los permisos necesarios.");
 
 
         }
@@ -111,7 +149,7 @@ namespace FilmsAPI.Controllers
 
             }
 
-            return Forbid("No tenes los permisos necesarios para realizar esta operación.");
+            return Forbid("No tenes los permisos necesarios.");
 
 
         }

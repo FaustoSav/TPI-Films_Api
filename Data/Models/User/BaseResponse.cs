@@ -1,4 +1,4 @@
-﻿namespace FilmsAPI.Data.Models
+﻿namespace FilmsAPI.Data.Models.User
 {
     public class BaseResponse
     {

@@ -1,6 +1,6 @@
 ﻿using FilmsAPI.Data.DBContext;
 using FilmsAPI.Data.Entities;
-using FilmsAPI.Data.Models;
+using FilmsAPI.Data.Models.User;
 using FilmsAPI.Services.Interface;
 
 namespace FilmsAPI.Services.Implementations
@@ -74,7 +74,7 @@ namespace FilmsAPI.Services.Implementations
 
         public User? GetUserById(int userId)
         {
-            return _mediaContext.Users.SingleOrDefault(u => u.Id == userId);
+            return _mediaContext.Users.SingleOrDefault(u => u.Id == userId && u.State);
 
         }
 

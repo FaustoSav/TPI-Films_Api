@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FilmsAPI.Data.Models
+namespace FilmsAPI.Data.Models.User
 {
     public class UserPostDto
     {
@@ -12,11 +12,7 @@ namespace FilmsAPI.Data.Models
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
         [Required]
         public string UserName { get; set; }
-
-        [Required]
-        public string UserType { get; set; }
     }
 }

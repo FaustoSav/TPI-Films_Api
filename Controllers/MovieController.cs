@@ -3,6 +3,7 @@ using FilmsAPI.Data.Models.Movie;
 using FilmsAPI.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FilmsAPI.Controllers
 {
@@ -33,6 +34,20 @@ namespace FilmsAPI.Controllers
 
         }
 
+        [HttpGet("DeletedMovies")]
+        public IActionResult GetDeletedMovies()
+        {
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            if (role == "Admin")
+            {
+                return Ok(_movieService.GetDeletedMovies());
+
+            }
+            return Forbid("Permisos insuficientes");
+
+
+        }
+
         [HttpGet("id")]
         public IActionResult GetMovieById([FromQuery] int id)
         {
@@ -55,7 +70,7 @@ namespace FilmsAPI.Controllers
         public IActionResult GetMovieByTitle([FromQuery] string title)
         {
 
-            Movie? movie = _movieService.GetMovieByTitle(title);
+            List<Movie>? movie = _movieService.GetMoviesByTitle(title);
 
             if (movie == null)
             {
@@ -71,25 +86,37 @@ namespace FilmsAPI.Controllers
         public IActionResult DeleteMovie([FromQuery] int deleteId)
         {
 
-            _movieService.RemoveMovie(deleteId);
-            return Ok("Pelicula eliminada");
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            if (role == "Admin")
+            {
+                _movieService.RemoveMovie(deleteId);
+                return Ok("Pelicula eliminada");
+            }
+            return Forbid("Permisos insuficientes");
+
 
         }
 
         [HttpPost]
         public IActionResult AddMovie([FromBody] MoviePost movie)
         {
-            var Movie = new Movie()
+            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            if (role == "Admin")
             {
+                Movie Movie = new Movie()
+                {
 
-                Title = movie.Title,
-                Description = movie.Description,
-                Genre = movie.Genre,
-                Duration = movie.Duration,
-            };
+                    Title = movie.Title,
+                    Description = movie.Description,
+                    Genre = movie.Genre,
+                    Duration = movie.Duration,
+                };
 
-            int movieId = _movieService.AddMovie(Movie);
-            return Ok(movieId);
+                int movieId = _movieService.AddMovie(Movie);
+                return Ok(movieId);
+            }
+            return Forbid("Permisos insuficientes");
+
 
         }
 

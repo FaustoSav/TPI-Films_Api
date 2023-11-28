@@ -2,6 +2,7 @@
 using FilmsAPI.Data.Entities;
 using FilmsAPI.Data.Enum;
 using FilmsAPI.Services.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace FilmsAPI.Services.Implementations
 {
@@ -27,37 +28,33 @@ namespace FilmsAPI.Services.Implementations
         {
             Movie? movieToDelete = _mediaContext.Movies.FirstOrDefault(s => s.MediaId == id);
 
-            if (movieToDelete != null)
-            {
-                movieToDelete.State = false;
 
-                _mediaContext.Update(movieToDelete);
-                _mediaContext.SaveChanges();
-            }
-            else
-            {
-                //Para cuando movieToDelete es NULL
-                Console.WriteLine("La serie no se encontró en la base de datos.");
-            }
 
+            movieToDelete.State = false;
+
+            _mediaContext.Update(movieToDelete);
+            _mediaContext.SaveChanges();
 
 
         }
         public List<Movie> GetAllMovies()
 
         {
-
-            return _mediaContext.Movies.ToList();
+            return _mediaContext.Movies.Where(m => m.State).ToList();
+        }
+        public List<Movie> GetDeletedMovies()
+        {
+            return _mediaContext.Movies.Where(m => !m.State).ToList();
         }
         public Movie? GetMovieById(int id)
         {
-            return _mediaContext.Movies.SingleOrDefault(m => m.MediaId == id);
+            return _mediaContext.Movies.SingleOrDefault(m => m.MediaId == id && m.State);
         }
-        public Movie GetMovieByTitle(string title)
+        public List<Movie> GetMoviesByTitle(string title)
 
         {
 
-            Movie? movie = _mediaContext.Movies.SingleOrDefault(m => m.Title == title);
+            List<Movie>? movie = _mediaContext.Movies.Where(m => m.Title.Contains(title) && m.State).ToList();
             return movie;
 
         }

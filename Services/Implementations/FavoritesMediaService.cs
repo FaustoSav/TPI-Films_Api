@@ -36,8 +36,6 @@ namespace FilmsAPI.Services.Implementations
             FavoriteMedia? favoriteToDelete = _mediaContext.FavoritesMedia.SingleOrDefault(fm => fm.FavoriteMediaId == id);
             if (favoriteToDelete != null)
             {
-                
-               
                 _mediaContext.Remove(favoriteToDelete);
                 _mediaContext.SaveChanges();
             }

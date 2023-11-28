@@ -1,5 +1,5 @@
 ﻿using FilmsAPI.Data.Entities;
-using FilmsAPI.Data.Models;
+using FilmsAPI.Data.Models.User;
 
 namespace FilmsAPI.Services.Interface
 {

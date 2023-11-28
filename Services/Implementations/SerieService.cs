@@ -27,36 +27,31 @@ namespace FilmsAPI.Services.Implementations
         {
             Serie? serieToDelete = _mediaContext.Series.FirstOrDefault(s => s.MediaId == id);
 
-            if (serieToDelete != null)
-            {
-                serieToDelete.State = false;
 
-                _mediaContext.Update(serieToDelete);
-                _mediaContext.SaveChanges();
-            }
-            else
-            {
-                //Para cuando serieToDelete es NULL
-                Console.WriteLine("La serie no se encontró en la base de datos.");
-            }
+            serieToDelete.State = false;
 
-
-
+            _mediaContext.Update(serieToDelete);
+            _mediaContext.SaveChanges();
         }
         public List<Serie> GetAllSeries()
 
         {
-
-            return _mediaContext.Series.ToList();
+            return _mediaContext.Series.Where(s=> s.State).ToList();
         }
+
+        public List<Serie> GetDeletedSeries()
+        {
+            return _mediaContext.Series.Where(s => !s.State).ToList();
+        }
+
         public Serie? GetSerieById(int id)
         {
             return _mediaContext.Series.SingleOrDefault(s => s.MediaId == id);
         }
-        public Serie GetSerieByTitle(string title)
+        public List<Serie> GetSeriesByTitle(string title)
 
         {
-            Serie? serie = _mediaContext.Series.SingleOrDefault(s => s.Title == title);
+            List<Serie>? serie = _mediaContext.Series.Where(s => s.Title.Contains(title) && s.State).ToList(); ;
 
             return serie;
 
