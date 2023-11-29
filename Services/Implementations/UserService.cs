@@ -2,6 +2,8 @@
 using FilmsAPI.Data.Entities;
 using FilmsAPI.Data.Models.User;
 using FilmsAPI.Services.Interface;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace FilmsAPI.Services.Implementations
 {
@@ -9,10 +11,13 @@ namespace FilmsAPI.Services.Implementations
     {
 
         private readonly MediaContext _mediaContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(MediaContext mediaContext)
+
+        public UserService(MediaContext mediaContext, IHttpContextAccessor httpContextAccessor)
         {
             _mediaContext = mediaContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public List<User> GetAllUsers()
@@ -75,6 +80,15 @@ namespace FilmsAPI.Services.Implementations
         public User? GetUserById(int userId)
         {
             return _mediaContext.Users.SingleOrDefault(u => u.Id == userId && u.State);
+
+        }
+
+        public int? GetCurrentUser()
+        {
+
+            var userIdString = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return userIdString != null ? int.Parse(userIdString) : (int?)null;
 
         }
 

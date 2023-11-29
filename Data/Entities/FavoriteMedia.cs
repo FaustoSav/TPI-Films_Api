@@ -8,15 +8,16 @@ namespace FilmsAPI.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int FavoriteMediaId{ get; set; }
-        public string Title { get; set; } = string.Empty;
+        public int FavoriteMediaId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public bool State { get; set; } = true;
 
         [ForeignKey("UserId")]
         public int UserId { get; set; }
         public User? User { get; set; }
-        public string MediaType { get; set; } = string.Empty;
+        public string MediaType { get; set; }
 
 
         [ForeignKey("MediaId")]

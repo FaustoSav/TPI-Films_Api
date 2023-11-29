@@ -6,8 +6,7 @@ namespace FilmsAPI.Data.Entities
 {
     public class Serie : Media
     {
-        public MediaType MediaType { get; set; } = MediaType.Serie;
-
+        public override MediaType MediaType { get { return MediaType.Serie; } }
         public int Seasons { get; set; }
         public int Episodes { get; set; }
     }

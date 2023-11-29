@@ -9,14 +9,19 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+/*
+ {
+  "email": "savoyafausto@gmail.com",
+  "password": "123456"
+}
+ 
+ */
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setupAction =>
 {
-    setupAction.AddSecurityDefinition("MediaApiApiBearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
+    setupAction.AddSecurityDefinition("MediaApiApiBearerAuth", new OpenApiSecurityScheme()
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
@@ -31,23 +36,23 @@ builder.Services.AddSwaggerGen(setupAction =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "MediaApiApiBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definición
+                    Id = "MediaApiApiBearerAuth" }
                 }, new List<string>() }
     });
 }); ;
 builder.Services.AddDbContext<MediaContext>(dbContextOptions => dbContextOptions.UseSqlite(
     builder.Configuration["DB:ConnectionString"]));
 
-# region Inyecccion de dependencias
+builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<ISerieService, SerieService>();
-builder.Services.AddScoped<IFavoritesMedia, FavoritesMediaService>();
 builder.Services.AddScoped<IUserService, UserService>();
-#endregion
+builder.Services.AddScoped<IFavoritesMedia, FavoritesMediaService>();
 
 
-builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token
-    .AddJwtBearer(options => //Acá definimos la configuración de la autenticación. le decimos qué cosas queremos comprobar. La fecha de expiración se valida por defecto.
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new()
         {

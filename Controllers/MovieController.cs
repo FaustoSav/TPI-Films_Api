@@ -38,6 +38,8 @@ namespace FilmsAPI.Controllers
         public IActionResult GetDeletedMovies()
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+
+
             if (role == "Admin")
             {
                 return Ok(_movieService.GetDeletedMovies());
@@ -87,8 +89,13 @@ namespace FilmsAPI.Controllers
         {
 
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            Movie? movie = _movieService.GetMovieById(deleteId);
             if (role == "Admin")
             {
+                if (movie == null)
+                {
+                    return NotFound();
+                }
                 _movieService.RemoveMovie(deleteId);
                 return Ok("Pelicula eliminada");
             }

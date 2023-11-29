@@ -1,13 +1,15 @@
 ﻿using FilmsAPI.Data.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace FilmsAPI.Data.Models.FavoriteMedia
 {
     public class FavoriteMediaPostDto
     {
-  
-        public string Title { get; set; } = "Default Value";
-        public string Description { get; set; } = string.Empty;
-        public string Genre { get; set; } = string.Empty;
+
+
+        [Required]
+        public int MediaId { get; set; }
+        [Required]
         public MediaType MediaType { get; set; }
     }
 }

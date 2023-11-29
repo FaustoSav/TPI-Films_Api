@@ -41,6 +41,8 @@ namespace FilmsAPI.Controllers
         public IActionResult GetDeletedSeries()
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+
+
             if (role == "Admin")
             {
                 return Ok(_serieService.GetDeletedSeries());
@@ -88,8 +90,16 @@ namespace FilmsAPI.Controllers
         public IActionResult DeleteSerie([FromQuery] int deleteId)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+
+            Serie? serie = _serieService.GetSerieById(deleteId);
             if (role == "Admin")
             {
+
+                if (serie == null)
+                {
+
+                    return NotFound("La serie que desea eliminar no existe.");
+                }
                 _serieService.RemoveSerie(deleteId);
                 return Ok("Serie eliminada");
             }

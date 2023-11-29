@@ -41,7 +41,7 @@ namespace FilmsAPI.Controllers
         {
 
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
-            if(role == "Admin")
+            if (role == "Admin")
             {
                 User? user = _userService.GetUserByEmail(email);
 
@@ -87,26 +87,33 @@ namespace FilmsAPI.Controllers
         public IActionResult CreateAdmin([FromBody] UserPostDto userDto)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
-            if (role == "Admin")
+            User? userExist = _userService.GetUserByEmail(userDto.Email);
+
+            if (userExist == null)
             {
-
-                Admin user = new Admin()
+                if (role == "Admin")
                 {
-                    Email = userDto.Email,
-                    LastName = userDto.LastName,
-                    Name = userDto.Name,
-                    Password = userDto.Password,
-                    UserType = "Admin",
-                    UserName = userDto.UserName,
-                };
 
-                int id = _userService.CreateUser(user);
-                return Ok(id);
+                    Admin user = new Admin()
+                    {
+                        Email = userDto.Email,
+                        LastName = userDto.LastName,
+                        Name = userDto.Name,
+                        Password = userDto.Password,
+                        UserType = "Admin",
+                        UserName = userDto.UserName,
+                    };
+
+                    int id = _userService.CreateUser(user);
+                    return Ok(id);
+                }
+
+                return Forbid("No tenes los permisos necesarios.");
+
             }
-
-            return Forbid("No tenes los permisos necesarios.");
-
+            return BadRequest("Ya existe un usuario con ese correo.");
         }
+
 
         [HttpPut]
         public IActionResult UpdateUser([FromBody] UserUpdateDto userUpdateDto)

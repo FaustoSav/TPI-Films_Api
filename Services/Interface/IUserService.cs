@@ -1,5 +1,6 @@
 ﻿using FilmsAPI.Data.Entities;
 using FilmsAPI.Data.Models.User;
+using System.Security.Claims;
 
 namespace FilmsAPI.Services.Interface
 {
@@ -13,6 +14,8 @@ namespace FilmsAPI.Services.Interface
         public int CreateUser(User user);
         public void UpdateUser(User user);
         public void DeleteUser(int userId);
+
+        public int? GetCurrentUser();
 
     }
 }
