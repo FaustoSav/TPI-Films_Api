@@ -111,7 +111,7 @@ namespace FilmsAPI.Services.Implementations
         }
         public List<FavoriteMedia>? GetFavoriteByTitle(string title)
         {
-            return _mediaContext.FavoritesMedia.Where(f => f.Title.Contains(title)).ToList();
+            return _mediaContext.FavoritesMedia.Where(f => f.Title.ToLower().Contains(title.ToLower())).ToList();
         }
     }
 }

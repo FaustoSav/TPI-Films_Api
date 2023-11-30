@@ -54,7 +54,7 @@ namespace FilmsAPI.Services.Implementations
 
         {
 
-            List<Movie>? movie = _mediaContext.Movies.Where(m => m.Title.Contains(title) && m.State).ToList();
+            List<Movie>? movie = _mediaContext.Movies.Where(m => m.Title.ToLower().Contains(title.ToLower()) && m.State).ToList();
             return movie;
 
         }

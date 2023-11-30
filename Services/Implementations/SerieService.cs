@@ -51,7 +51,7 @@ namespace FilmsAPI.Services.Implementations
         public List<Serie> GetSeriesByTitle(string title)
 
         {
-            List<Serie>? serie = _mediaContext.Series.Where(s => s.Title.Contains(title) && s.State).ToList(); ;
+            List<Serie>? serie = _mediaContext.Series.Where(s => s.Title.ToLower().Contains(title.ToLower()) && s.State ).ToList(); ;
 
             return serie;
 
