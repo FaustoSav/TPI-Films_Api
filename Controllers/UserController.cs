@@ -26,21 +26,23 @@ namespace FilmsAPI.Controllers
         [HttpGet]
         public IActionResult GetUsers()
         {
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
             if (role == "Admin")
             {
                 return Ok(_userService.GetAllUsers());
 
             }
-            return Forbid("Permisos insuficientes");
+            return Forbid();
 
         }
 
-        [HttpGet("{email}")]
+        [HttpGet("email")]
         public IActionResult GetUserByEmail([FromQuery] string email)
         {
 
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
             if (role == "Admin")
             {
                 User? user = _userService.GetUserByEmail(email);
@@ -51,7 +53,7 @@ namespace FilmsAPI.Controllers
                 }
                 return Ok(user);
             }
-            return Forbid("Permisos insuficientes");
+            return Forbid();
 
         }
 
@@ -61,7 +63,8 @@ namespace FilmsAPI.Controllers
 
         public IActionResult CreateRegularUser([FromBody] UserPostDto userDto)
         {
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
             if (role == "Admin")
             {
 
@@ -79,14 +82,15 @@ namespace FilmsAPI.Controllers
                 return Ok(id);
             }
 
-            return Forbid("No tenes los permisos necesarios.");
+            return Forbid();
 
         }
         [HttpPost]
         [Route("CreateAdmin")]
         public IActionResult CreateAdmin([FromBody] UserPostDto userDto)
         {
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
             User? userExist = _userService.GetUserByEmail(userDto.Email);
 
             if (userExist == null)
@@ -108,17 +112,18 @@ namespace FilmsAPI.Controllers
                     return Ok(id);
                 }
 
-                return Forbid("No tenes los permisos necesarios.");
+                return Forbid();
 
             }
-            return BadRequest("Ya existe un usuario con ese correo.");
+            return BadRequest();
         }
 
 
         [HttpPut]
         public IActionResult UpdateUser([FromBody] UserUpdateDto userUpdateDto)
         {
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
 
             if (role == "Admin")
             {
@@ -138,7 +143,7 @@ namespace FilmsAPI.Controllers
                 return Ok();
             }
 
-            return Forbid("No tenes los permisos necesarios.");
+            return Forbid();
 
 
         }
@@ -148,7 +153,8 @@ namespace FilmsAPI.Controllers
         public IActionResult DeleteUser([FromQuery] int idDelete)
         {
 
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
 
             if (role == "Admin")
             {
@@ -156,7 +162,7 @@ namespace FilmsAPI.Controllers
 
             }
 
-            return Forbid("No tenes los permisos necesarios.");
+            return Forbid();
 
 
         }

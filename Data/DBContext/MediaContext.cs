@@ -51,8 +51,8 @@ namespace FilmsAPI.Data.DBContext
             modelBuilder.Entity<RegularUser>().HasData(
                 new RegularUser
                 {
-                    LastName = "Garcia",
-                    Name = "Pedro",
+                    LastName = "Regular",
+                    Name = "User",
                     Email = "regular@gmail.com",
                     UserName = "regular",
                     Password = "123456",

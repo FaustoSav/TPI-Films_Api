@@ -24,49 +24,53 @@ namespace FilmsAPI.Controllers
             _favoriteMediaService = favoriteMediaService;
         }
 
-        [HttpGet]
-        public IActionResult GetAllFavorites()
+        [HttpGet("Favorites")]
+        public IActionResult GetAllFavorites([FromQuery] int userId)
         {
-            return Ok(_favoriteMediaService.GetAllFavorites());
+            return Ok(_favoriteMediaService.GetAllFavorites(userId));
         }
 
         [HttpPost]
-        public IActionResult AddFavorite([FromBody] FavoriteMediaPostDto mediaToAdd)
+        public IActionResult AddFavorite([FromBody] FavoriteMediaPostDto mediaToAdd, int userId)
         {
 
            // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             
 
-            int newFavoriteId = _favoriteMediaService.AddToFavorites(mediaToAdd);
+            int newFavoriteId = _favoriteMediaService.AddToFavorites(mediaToAdd, userId);
 
 
             if (newFavoriteId == -1)
             {
-                return NotFound($"Parece que la {mediaToAdd.MediaType} que queres agregar a favoritos, no existe. Chequear ID y/o asegurarse que el MediaType sea Serie | Movie.");
+                return NotFound();
             }
             return Ok(newFavoriteId);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteFavorite([FromQuery] int id)
+        //public List<FavoriteMedia> GetAllFavorites(int userId);
+        //public int AddToFavorites(FavoriteMediaPostDto mediaToAdd, int userId);
+        //public void RemoveFromFavorites(int favoriteId, int userId);
+        //public FavoriteMedia? GetFavoriteById(int mediaId, int userId);
+        [HttpDelete]
+        public IActionResult DeleteFavorite([FromQuery] int mediaId, int userId)
         {
 
-            FavoriteMedia favoriteMedia = _favoriteMediaService.GetFavoriteById(id);
+            FavoriteMedia favoriteMedia = _favoriteMediaService.GetFavoriteById(mediaId, userId);
 
             if (favoriteMedia == null)
             {
                 return BadRequest();
             }
 
-            _favoriteMediaService.RemoveFromFavorites(id);
-            return Ok($"Pelicula {id} eliminada.");
+            _favoriteMediaService.RemoveFromFavorites(favoriteMedia.FavoriteMediaId, userId);
+            return Ok(favoriteMedia.FavoriteMediaId);
         }
 
         [HttpGet("id")]
-        public IActionResult GetFavoriteById([FromQuery] int id)
+        public IActionResult GetFavoriteById([FromQuery] int mediaId, int userId)
         {
 
-            FavoriteMedia? favorite = _favoriteMediaService?.GetFavoriteById(id);
+            FavoriteMedia? favorite = _favoriteMediaService.GetFavoriteById(mediaId, userId);
 
             if (favorite == null)
             {
@@ -75,19 +79,6 @@ namespace FilmsAPI.Controllers
             }
             return Ok(favorite);
 
-        }
-
-
-        [HttpGet("title")]
-        public IActionResult GetFavoritesByTitle([FromQuery] string title)
-        {
-            List<FavoriteMedia>? favoritesList = _favoriteMediaService.GetFavoriteByTitle(title);
-
-            if (favoritesList == null)
-            {
-                return NotFound();
-            }
-            return Ok(favoritesList);
         }
 
 

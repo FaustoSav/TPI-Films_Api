@@ -40,7 +40,8 @@ namespace FilmsAPI.Controllers
         [HttpGet("DeletedSeries")]
         public IActionResult GetDeletedSeries()
         {
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
 
 
             if (role == "Admin")
@@ -48,7 +49,7 @@ namespace FilmsAPI.Controllers
                 return Ok(_serieService.GetDeletedSeries());
 
             }
-            return Forbid("Permisos insuficientes");
+            return Forbid();
 
 
         }
@@ -61,7 +62,7 @@ namespace FilmsAPI.Controllers
             if (serie == null)
             {
 
-                return NotFound("No se encuentra ninguna serie on ese ID");
+                return NotFound();
 
             }
 
@@ -79,7 +80,7 @@ namespace FilmsAPI.Controllers
             if (serie == null)
             {
 
-                return NotFound("No se encuentra ninguna serie con ese titulo");
+                return NotFound();
             }
 
             return Ok(serie);
@@ -89,7 +90,8 @@ namespace FilmsAPI.Controllers
 
         public IActionResult DeleteSerie([FromQuery] int deleteId)
         {
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
 
             Serie? serie = _serieService.GetSerieById(deleteId);
             if (role == "Admin")
@@ -98,12 +100,12 @@ namespace FilmsAPI.Controllers
                 if (serie == null)
                 {
 
-                    return NotFound("La serie que desea eliminar no existe.");
+                    return NotFound();
                 }
                 _serieService.RemoveSerie(deleteId);
-                return Ok("Serie eliminada");
+                return Ok();
             }
-            return Forbid("Permisos insuficientes");
+            return Forbid();
 
         }
 
@@ -111,7 +113,8 @@ namespace FilmsAPI.Controllers
         public IActionResult AddMovie([FromBody] SeriePost serie)
         {
 
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
             if (role == "Admin")
             {
                 var Serie = new Serie()
@@ -127,9 +130,7 @@ namespace FilmsAPI.Controllers
                 int serieId = _serieService.AddSerie(Serie);
                 return Ok(serieId);
             }
-            return Forbid("Permisos insuficientes");
-
-
+            return Forbid();
         }
 
 

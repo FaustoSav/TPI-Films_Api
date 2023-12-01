@@ -37,7 +37,7 @@ namespace FilmsAPI.Controllers
         [HttpGet("DeletedMovies")]
         public IActionResult GetDeletedMovies()
         {
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
 
 
             if (role == "Admin")
@@ -88,7 +88,8 @@ namespace FilmsAPI.Controllers
         public IActionResult DeleteMovie([FromQuery] int deleteId)
         {
 
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
             Movie? movie = _movieService.GetMovieById(deleteId);
             if (role == "Admin")
             {
@@ -107,7 +108,8 @@ namespace FilmsAPI.Controllers
         [HttpPost]
         public IActionResult AddMovie([FromBody] MoviePost movie)
         {
-            string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value.ToString();
+            string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+
             if (role == "Admin")
             {
                 Movie Movie = new Movie()

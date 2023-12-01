@@ -8,7 +8,7 @@ namespace FilmsAPI.Data.Entities
     {
         public int Duration  { get; set; }
 
-        public override MediaType MediaType { get { return MediaType.Movie; } }
+        public override string MediaType { get { return "Movie"; } }
 
     }
 }

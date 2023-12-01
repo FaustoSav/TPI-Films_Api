@@ -385,8 +385,8 @@ namespace FilmsAPI.Migrations
                         {
                             Id = 3,
                             Email = "regular@gmail.com",
-                            LastName = "Garcia",
-                            Name = "Pedro",
+                            LastName = "Regular",
+                            Name = "User",
                             Password = "123456",
                             State = true,
                             UserName = "regular"

@@ -27,24 +27,30 @@ namespace FilmsAPI.Services.Implementations
 
 
         }
-        public List<FavoriteMedia> GetAllFavorites()
+        public List<FavoriteMedia> GetAllFavorites(int userId)
         {
 
-            return _mediaContext.FavoritesMedia.ToList();
+            return _mediaContext.FavoritesMedia.Where(f => f.UserId == userId).ToList();
 
 
         }
-        public int AddToFavorites(FavoriteMediaPostDto mediaToAdd)
+
+
+        //public List<FavoriteMedia> GetAllFavorites(int userId);
+        //public int AddToFavorites(FavoriteMediaPostDto mediaToAdd, int userId);
+        //public void RemoveFromFavorites(int favoriteId, int userId);
+        //public FavoriteMedia? GetFavoriteById(int mediaId, int userId);
+        public int AddToFavorites(FavoriteMediaPostDto mediaToAdd, int userId)
         {
             FavoriteMedia newFavorite = null;
-            var currentUserId = _userService.GetCurrentUser();
-            User currentUser = _mediaContext.Users.FirstOrDefault(u => u.Id == currentUserId);
-            if (currentUserId == null)
+           
+            User currentUser = _mediaContext.Users.FirstOrDefault(u => u.Id == userId);
+            if (currentUser == null)
             {
                 return -1;
             }
 
-            if (mediaToAdd.MediaType == MediaType.Serie)
+            if (mediaToAdd.MediaType == "Serie")
             {
                 Serie? serieToFav = _serieService.GetSerieById(mediaToAdd.MediaId);
 
@@ -53,32 +59,33 @@ namespace FilmsAPI.Services.Implementations
                 newFavorite = new FavoriteMedia
                 {
                     Title = serieToFav.Title,
-                    UserId = (int)currentUserId,
+                    UserId = currentUser.Id,
                     Description = serieToFav.Description,
-                    MediaType = serieToFav.MediaType.ToString(),
+                    MediaType = "Serie",
                     MediaId = mediaToAdd.MediaId
                 };
 
             }
-            if (mediaToAdd.MediaType == MediaType.Movie)
+            if (mediaToAdd.MediaType == "Movie")
             {
                 Movie? MovieToFav = _movieService.GetMovieById(mediaToAdd.MediaId);
 
-                if (MovieToFav == null) { }
+                if (MovieToFav == null) { return -1; }
                 newFavorite = new FavoriteMedia
                 {
                     Title = MovieToFav.Title,
-                    UserId = (int)currentUserId,
-                    MediaType = MovieToFav.MediaType.ToString(),
-                    MediaId = mediaToAdd.MediaId
+                    UserId = currentUser.Id,
+                    MediaType = "Movie",
+                    MediaId = mediaToAdd.MediaId,
+                    
                 };
             }
 
 
-            if (newFavorite != null || !FavoriteExists(newFavorite.Title))
+            if (newFavorite != null )
             {
-                currentUser.FavoritesMedia.Add(newFavorite);
-                _mediaContext.Update(currentUser);
+                _mediaContext.FavoritesMedia.Add(newFavorite);
+                
                 _mediaContext.SaveChanges();
                 return newFavorite.MediaId;
 
@@ -91,9 +98,9 @@ namespace FilmsAPI.Services.Implementations
 
 
         }
-        public void RemoveFromFavorites(int id)
+        public void RemoveFromFavorites(int favoriteId, int userId)
         {
-            FavoriteMedia? favoriteToDelete = _mediaContext.FavoritesMedia.SingleOrDefault(fm => fm.FavoriteMediaId == id);
+            FavoriteMedia? favoriteToDelete = _mediaContext.FavoritesMedia.SingleOrDefault(fm => fm.FavoriteMediaId == favoriteId && fm.UserId == userId);
 
             if (favoriteToDelete != null)
             {
@@ -104,30 +111,14 @@ namespace FilmsAPI.Services.Implementations
 
         }
 
-        public FavoriteMedia? GetFavoriteById(int id)
+        public FavoriteMedia? GetFavoriteById(int mediaId, int userId)
         {
-            return _mediaContext.FavoritesMedia.SingleOrDefault(s => s.FavoriteMediaId == id);
+            return _mediaContext.FavoritesMedia.SingleOrDefault(s => s.FavoriteMediaId == mediaId && s.UserId == userId);
 
         }
-        public List<FavoriteMedia>? GetFavoriteByTitle(string title)
-        {
-            return _mediaContext.FavoritesMedia.Where(f => f.Title.ToLower().Contains(title.ToLower())).ToList();
-        }
+ 
 
-
-        public bool FavoriteExists(string title)
-        {
-
-            FavoriteMedia? favorite = _mediaContext.FavoritesMedia.SingleOrDefault(f => f.Title.ToLower() == title.ToLower());
-
-            if (favorite != null)
-            {
-                return true;
-            }
-
-            return false;
-
-        }
+       
 
     }
 }

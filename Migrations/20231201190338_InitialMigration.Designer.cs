@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmsAPI.Migrations
 {
     [DbContext(typeof(MediaContext))]
-    [Migration("20231126233733_InitialMigration")]
+    [Migration("20231201190338_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -24,6 +24,10 @@ namespace FilmsAPI.Migrations
                     b.Property<int>("FavoriteMediaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("MediaId")
                         .HasColumnType("INTEGER");
@@ -134,9 +138,6 @@ namespace FilmsAPI.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("MediaType")
-                        .HasColumnType("INTEGER");
-
                     b.HasDiscriminator().HasValue("Movie");
 
                     b.HasData(
@@ -147,8 +148,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 1",
-                            Duration = 101,
-                            MediaType = 0
+                            Duration = 101
                         },
                         new
                         {
@@ -157,8 +157,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 2",
-                            Duration = 102,
-                            MediaType = 0
+                            Duration = 102
                         },
                         new
                         {
@@ -167,8 +166,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 3",
-                            Duration = 103,
-                            MediaType = 0
+                            Duration = 103
                         },
                         new
                         {
@@ -177,8 +175,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 4",
-                            Duration = 104,
-                            MediaType = 0
+                            Duration = 104
                         },
                         new
                         {
@@ -187,8 +184,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 5",
-                            Duration = 105,
-                            MediaType = 0
+                            Duration = 105
                         },
                         new
                         {
@@ -197,8 +193,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 6",
-                            Duration = 106,
-                            MediaType = 0
+                            Duration = 106
                         },
                         new
                         {
@@ -207,8 +202,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 7",
-                            Duration = 107,
-                            MediaType = 0
+                            Duration = 107
                         },
                         new
                         {
@@ -217,8 +211,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 8",
-                            Duration = 108,
-                            MediaType = 0
+                            Duration = 108
                         },
                         new
                         {
@@ -227,8 +220,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 9",
-                            Duration = 109,
-                            MediaType = 0
+                            Duration = 109
                         },
                         new
                         {
@@ -237,8 +229,7 @@ namespace FilmsAPI.Migrations
                             Genre = "Action",
                             State = true,
                             Title = "Pelicula 10",
-                            Duration = 110,
-                            MediaType = 0
+                            Duration = 110
                         });
                 });
 
@@ -249,17 +240,8 @@ namespace FilmsAPI.Migrations
                     b.Property<int>("Episodes")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("MediaType")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("Seasons")
                         .HasColumnType("INTEGER");
-
-                    b.ToTable("Media", t =>
-                        {
-                            t.Property("MediaType")
-                                .HasColumnName("Serie_MediaType");
-                        });
 
                     b.HasDiscriminator().HasValue("Serie");
 
@@ -272,7 +254,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 1",
                             Episodes = 4,
-                            MediaType = 1,
                             Seasons = 2
                         },
                         new
@@ -283,7 +264,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 2",
                             Episodes = 5,
-                            MediaType = 1,
                             Seasons = 3
                         },
                         new
@@ -294,7 +274,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 3",
                             Episodes = 6,
-                            MediaType = 1,
                             Seasons = 4
                         },
                         new
@@ -305,7 +284,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 4",
                             Episodes = 7,
-                            MediaType = 1,
                             Seasons = 5
                         },
                         new
@@ -316,7 +294,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 5",
                             Episodes = 8,
-                            MediaType = 1,
                             Seasons = 6
                         },
                         new
@@ -327,7 +304,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 6",
                             Episodes = 9,
-                            MediaType = 1,
                             Seasons = 7
                         },
                         new
@@ -338,7 +314,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 7",
                             Episodes = 10,
-                            MediaType = 1,
                             Seasons = 8
                         },
                         new
@@ -349,7 +324,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 8",
                             Episodes = 11,
-                            MediaType = 1,
                             Seasons = 9
                         },
                         new
@@ -360,7 +334,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 9",
                             Episodes = 12,
-                            MediaType = 1,
                             Seasons = 10
                         },
                         new
@@ -371,7 +344,6 @@ namespace FilmsAPI.Migrations
                             State = true,
                             Title = "Serie 10",
                             Episodes = 13,
-                            MediaType = 1,
                             Seasons = 11
                         });
                 });
@@ -416,8 +388,8 @@ namespace FilmsAPI.Migrations
                         {
                             Id = 3,
                             Email = "regular@gmail.com",
-                            LastName = "Garcia",
-                            Name = "Pedro",
+                            LastName = "Regular",
+                            Name = "User",
                             Password = "123456",
                             State = true,
                             UserName = "regular"

@@ -15,7 +15,7 @@ namespace FilmsAPI.Data.Entities
         public string Description { get; set; } = string.Empty;
         public string Genre { get; set; }
         public bool State { get; set; } = true;
-        public abstract MediaType MediaType { get;} 
+        public abstract string MediaType { get;} 
 
     }
 }
