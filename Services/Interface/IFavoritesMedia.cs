@@ -11,5 +11,6 @@ namespace FilmsAPI.Services.Interface
         public void RemoveFromFavorites(int id);
         public FavoriteMedia? GetFavoriteById( int id );
         public List<FavoriteMedia>? GetFavoriteByTitle( string title );
+        public bool FavoriteExists(string  title);
     }
 }

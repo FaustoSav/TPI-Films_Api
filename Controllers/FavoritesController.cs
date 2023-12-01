@@ -35,7 +35,7 @@ namespace FilmsAPI.Controllers
         {
 
            // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+            
 
             int newFavoriteId = _favoriteMediaService.AddToFavorites(mediaToAdd);
 

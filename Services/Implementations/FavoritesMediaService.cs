@@ -39,11 +39,11 @@ namespace FilmsAPI.Services.Implementations
             FavoriteMedia newFavorite = null;
             var currentUserId = _userService.GetCurrentUser();
             User currentUser = _mediaContext.Users.FirstOrDefault(u => u.Id == currentUserId);
-            if(currentUserId == null)
+            if (currentUserId == null)
             {
                 return -1;
             }
-            
+
             if (mediaToAdd.MediaType == MediaType.Serie)
             {
                 Serie? serieToFav = _serieService.GetSerieById(mediaToAdd.MediaId);
@@ -63,7 +63,7 @@ namespace FilmsAPI.Services.Implementations
             if (mediaToAdd.MediaType == MediaType.Movie)
             {
                 Movie? MovieToFav = _movieService.GetMovieById(mediaToAdd.MediaId);
-                    
+
                 if (MovieToFav == null) { }
                 newFavorite = new FavoriteMedia
                 {
@@ -75,11 +75,11 @@ namespace FilmsAPI.Services.Implementations
             }
 
 
-            if(newFavorite  != null)
+            if (newFavorite != null || !FavoriteExists(newFavorite.Title))
             {
                 currentUser.FavoritesMedia.Add(newFavorite);
                 _mediaContext.Update(currentUser);
-                _mediaContext.SaveChanges(); 
+                _mediaContext.SaveChanges();
                 return newFavorite.MediaId;
 
             }
@@ -100,7 +100,7 @@ namespace FilmsAPI.Services.Implementations
                 _mediaContext.Remove(favoriteToDelete);
                 _mediaContext.SaveChanges();
             }
-            
+
 
         }
 
@@ -113,5 +113,21 @@ namespace FilmsAPI.Services.Implementations
         {
             return _mediaContext.FavoritesMedia.Where(f => f.Title.ToLower().Contains(title.ToLower())).ToList();
         }
+
+
+        public bool FavoriteExists(string title)
+        {
+
+            FavoriteMedia? favorite = _mediaContext.FavoritesMedia.SingleOrDefault(f => f.Title.ToLower() == title.ToLower());
+
+            if (favorite != null)
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+
     }
 }
