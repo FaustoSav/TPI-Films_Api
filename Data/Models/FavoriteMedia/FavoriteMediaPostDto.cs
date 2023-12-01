@@ -10,6 +10,7 @@ namespace FilmsAPI.Data.Models.FavoriteMedia
         [Required]
         public int MediaId { get; set; }
         [Required]
+        [RegularExpression("^(Movie|Serie)$", ErrorMessage = "El valor de mediaType debe ser 'Movie' o 'Serie'.")]
         public MediaType MediaType { get; set; }
     }
 }
