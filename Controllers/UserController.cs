@@ -148,7 +148,7 @@ namespace FilmsAPI.Controllers
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("id")]
 
         public IActionResult DeleteUser([FromQuery] int idDelete)
         {
@@ -159,6 +159,7 @@ namespace FilmsAPI.Controllers
             if (role == "Admin")
             {
                 _userService.DeleteUser(idDelete);
+                return Ok("Usuario eliminado");
 
             }
 

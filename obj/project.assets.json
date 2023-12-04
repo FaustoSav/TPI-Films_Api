@@ -2085,11 +2085,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Usuario\\Desktop\\FilmsAPI\\FilmsAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Usuario\\Desktop\\P3\\FilmsAPI\\FilmsAPI.csproj",
       "projectName": "FilmsAPI",
-      "projectPath": "C:\\Users\\Usuario\\Desktop\\FilmsAPI\\FilmsAPI.csproj",
+      "projectPath": "C:\\Users\\Usuario\\Desktop\\P3\\FilmsAPI\\FilmsAPI.csproj",
       "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Usuario\\Desktop\\FilmsAPI\\obj\\",
+      "outputPath": "C:\\Users\\Usuario\\Desktop\\P3\\FilmsAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",

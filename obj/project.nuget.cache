@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lQ3nvMw749qiwr5YfannKGmtSMoYgLjf7q7JQ134xXf205dHMX6w7SxQM3gH720XH4H/qtOM6Rpn/aMGkwhNHQ==",
+  "dgSpecHash": "+aIsJUoINLWlZf8RArEp3iTF3zYjjnWowPEvSlYtNcrs/fdi2Gh5lmn7yeGoL0LlKrc5tV41U8RHCt0ihDj4Nw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Usuario\\Desktop\\FilmsAPI\\FilmsAPI.csproj",
+  "projectFilePath": "C:\\Users\\Usuario\\Desktop\\P3\\FilmsAPI\\FilmsAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.24\\microsoft.aspnetcore.authentication.jwtbearer.6.0.24.nupkg.sha512",
